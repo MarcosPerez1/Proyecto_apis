@@ -1,18 +1,3 @@
-
-// const apikey="PslKWFfBicZtSeqy8OFjm67xGQPBl0ykRKmvA3Ksz9LiXNdyobOGz7ZQ"; //use the apikey you have generated
-// const input=document.querySelector("input");
-// const search_btn=document.querySelector(".search_btn");
-// const showmore_btn=document.querySelector(".showmore");
-// const buscador = document.querySelector("#buscador");
-// const envpiar = document.querySelector("#enviar");
-// const cardInicio = document.querySelector("#cardInicio");
-// const botonesPagina = document.querySelector("#botonesPagina");
-// const fotoAmpliada= document.querySelector("#cardFotoAmpliada");
-// const cardBusqueda = document.querySelector("#cardBusqueda");
-// const mensajeBusqueda = document.querySelector("#mensajeBusqueda")
-
-///////PRUEBAS
-
 const form = document.getElementById('form');
 const input = document.getElementById('input');
 const contnedorFotos = document.getElementById('image-container');
@@ -20,7 +5,7 @@ const contenedorBotones = document.getElementById('button-container');
 const apiKey = 'PslKWFfBicZtSeqy8OFjm67xGQPBl0ykRKmvA3Ksz9LiXNdyobOGz7ZQ';
 let paginaAct = 1;
 let totalPags = 1;
-
+////////////////
 const saberCual=(cual)=>{
     console.log(cual)
 }
@@ -125,6 +110,4 @@ form.addEventListener('submit', (event) => {
   paginaAct = 1;
   obtenerFotos();
 });
-
-
 
