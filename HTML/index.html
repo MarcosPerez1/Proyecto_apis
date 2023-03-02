@@ -5,40 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
     <link rel="stylesheet" type="text/css" href="../CSS/main.css" />
 </head>
 <body>
-
-    <header>
-        <nav>
-            Barra de navegacion, útil o no con un logo a la izquierda
-        </nav>
+    <header class="header">
+        <div class="logo">
+            <img src="https://cdn-images-1.medium.com/max/800/1*hCLxRgOtiWBy4ykQZ1toWQ@2x.png">
+        </div>
+        <div class="nav">
+            <nav>
+                <ul>
+                    <li><a href="index.html"><b>Inicio</b></a></li>
+                    <li><a href="paginaFiltrados.html"><b>Galería</b></a></l>
+                </ul>
+            </nav>
+        </div>
     </header>
-
     <main>
-        <section>
-            <div id="buscador">Barra Buscador</div>
-            <div id="enviar">Boton Enviar</div>
-            <div id="mensajeBusqueda">Mensaje "Se han encontrado..."</div>
-        </section>
-
-        <section>
-            <div id="cardInicio">3 fotos iniciales</div>
-            <div id="cardBusqueda">Pintaremos las fotos buscadas</div>
-            <div id="botonesPagina">Botones de siguiente página, anterior</div>
-        </section>
-
+        <!-- action="paginaFiltrados.html" -->
+        <form id="form" action="" method="get">
+            <label for="input">Buscar fotos:</label>
+            <input type="text" id="input" name="busqueda">
+            <button type="submit">Buscar</button>
+            <select name="select" id="formato">Elija el formato de la foto</select>
+        </form>
+        <div id="contenedorIndex" class="container"></div>
+        <div id="image-container"></div>
+        <div id="button-container"></div>
+        <div id="fotoAmpliada"></div>
     </main>
-
-    <footer>
-        Pondremos cositas
-    </footer>
-    
-
-
-
-
     <script src="../JS/main.js"></script>
 </body>
 </html>
