@@ -59,9 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
       id = photos.id;
     });
   };
-//   modifique la función pintarFotosFiltradas para que no acceda al elemento DivFiltradas. 
-//En su lugar, deberá agregar un parámetro al que se le pasará el elemento contenedor de las fotos.
-// js
+
   const pintarFotosFiltradas = (data) => {
     DivFiltradas.innerHTML = "";
     data.photos.forEach((photos) => {
