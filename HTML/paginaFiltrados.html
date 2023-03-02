@@ -5,43 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
     <link rel="stylesheet" type="text/css" href="" />
 </head>
 <body>
 
     <header>
-        <nav>
-            Barra de navegacion, útil o no con un logo a la izquierda
-        </nav>
+        <div class="logo">
+            <img src="https://cdn-images-1.medium.com/max/800/1*hCLxRgOtiWBy4ykQZ1toWQ@2x.png" style="width: 40%">
+        </div>
+
+        <div class="nav">
+            <nav>
+                <ul>
+                    <li><a href="index.html"><b>Inicio</b></a></li>
+                    <li><a href="paginaFiltrados.html"><b>Galería</b></a></l>
+                </ul>
+            </nav>
+        </div>
     </header>
 
     <main>
+
         <section>
-            <form id="form">
+            <form id="form" action="" method="get">
                 <label for="input">Buscar fotos:</label>
-                <input type="text" id="input" required>
+                <input type="text" id="input" name="busqueda">
                 <button type="submit">Buscar</button>
               </form>
-            <div id="mensajeBusqueda">Mensaje "Se han encontrado..."</div>
         </section>
 
-          <div class="image-box"></div>
+        <section>
+        
+          <div id="image-container"></div>
 
-         
-            <div id="button-container"></div>
+          <div id="button-container"></div>
+
+        </section>
 
     </main>
 
-    <footer>
-        Pondremos cositas
 
-    </footer>
+
+
+
+
     
-
-
-
-
-    <script src="../JS/main.js"></script>
 </body>
+<script src="../JS/main.js"></script>
 </html>

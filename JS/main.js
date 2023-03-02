@@ -1,173 +1,220 @@
-//////////////// CONSTANTES ///////////////
-
-const form = document.getElementById('form');
-const input = document.getElementById('input');
-const DivFiltradas = document.getElementById('image-container');
-const contenedorBotones = document.getElementById('button-container');
-const apiKey = 'PslKWFfBicZtSeqy8OFjm67xGQPBl0ykRKmvA3Ksz9LiXNdyobOGz7ZQ';
-const filtradas = document.getElementById("filtradas");
-const contenedorIndex = document.getElementById("contenedorIndex");
-const fotoAmpliada = document.getElementById("fotoAmpliada");
-
-let paginaAct = 1;
-let totalPags = 1;
 
 
-const fotosIndex = [
-    ["https://images.pexels.com/photos/2724664/pexels-photo-2724664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","Montaña"],
-    ["https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","Animales"],
-    ["https://images.pexels.com/photos/161913/germany-history-architecture-medieval-161913.jpeg", "Castillos"],
-];
+
+//                CONSTANTES y VARIABLES        //
 
 
 
 
-
-///////////////////////// EVENTOS //////////////////
-
-
-const saberCual=(cual)=>{
-
-}
-
-
-const init=()=>{
-    const url=location.search
-
-    let params = new URLSearchParams(url);
-
-    if(params.has('id')){
-        console.log(params)
-        const id=params.get('id')
-        console.log(id)
-        saberCual('filtradosypagina')
-    }else{
-        saberCual('index')
-    }
-   
-
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('form');
+  const input = document.getElementById('input');
+  const DivFiltradas = document.getElementById('image-container');
+  const contenedorBotones = document.getElementById('button-container');
+  const contenedorIndex = document.getElementById("contenedorIndex");
+  const fotoAmpliada = document.getElementById("fotoAmpliada");
 
 
-init()
 
-/////////////////////////////////////////////
+   // OCULTAR
+  const apiKey = 'PslKWFfBicZtSeqy8OFjm67xGQPBl0ykRKmvA3Ksz9LiXNdyobOGz7ZQ';
 
-const pintarFotosFiltradas =  (data) => {
-    DivFiltradas.innerHTML = '';
   
-    data.photos.forEach(photos => {
-    const contenedorFotos = document.createElement("div");
-    const img = document.createElement('img');
-    img.src = photos.src.tiny;
-    const caption = document.createElement('caption');
-    caption.alt = photos.alt;
-    const photographer = document.createElement("P")
-    photographer.photographer = photos.photographer;
-    contenedorFotos.append(img);
-    contenedorFotos.append(caption.alt);
-    contenedorFotos.append(photographer.photographer);
-    DivFiltradas.append(contenedorFotos);
-    console.log(DivFiltradas);
+  let id;
+  let paginaAct = 1;
+  let totalPags = 1;
+
+
+  const formato = document.querySelector("#formato");
+  const arrayFormato = ["-------", "verticales", "apaisado"];
+
+
+  const fotosIndex = [
+      ["https://images.pexels.com/photos/2724664/pexels-photo-2724664.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","Montañas"],
+      ["https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1","Animales"],
+      ["https://images.pexels.com/photos/161913/germany-history-architecture-medieval-161913.jpeg", "Castillos"],
+  ];
+
+
+  //      EVENTOS  //
+
+   ////  CAPTURAMOS EL BUSCADOR SEARCH ////////
+
+
+  form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      obtenerFotos();
+    });
+
+
+    ///////CAPTURAMOS LA INFORMACION DEL SELECT
+
+
+  formato.addEventListener("change", (event) => {
+    obtenerFotos();
   });
-};
-
-const pintarCardIndex = (data) => {
-    contenedorIndex.innerHTML = '';
-
-    fotosIndex.forEach((item) => {
-       const cardImg = document.createElement("IMG");
-       cardImg.src = `${item[0]}`
-       cardImg.alt = `${item[1]}`
-       const textoh3 = document.createElement("H3");
-       textoh3.textContent = item[1];
-       contenedorIndex.append(cardImg, textoh3);    
-    })
-   }
 
 
 
 
-const pintarFotoAmpliada = (id) => {
-    fotoAmpliada.innerHTML="";
+    /// FUNCIONES /////
 
-    let contenedorFotoA = document.createElement("div");
-    let imageA = document.createElement("img");
-    imageA.src = photos.src.large2x;
-    const caption = document.createElement('caption');
-    caption.alt = photos.alt;
-    const photographer = document.createElement("P");
-    photographer.photographer = photos.photographer;
-    contenedorFotoA.append(imageA);
-    contenedorFotoA.append(caption.alt);
-    contenedorFotoA.append(photographer.photographer);
-}
 
-const pintarBotones = () => {
-  contenedorBotones.innerHTML = '';
+    // PINTAMOS EL SELECT ////
 
-  const pageNumber = document.createElement('span');
-  pageNumber.textContent = `Página ${paginaAct} de ${totalPags}`;
-  contenedorBotones.appendChild(pageNumber);
 
-  if (totalPags > 1) {
-    const botonAntes = document.createElement('button');
-    botonAntes.textContent = 'Anterior';
-    botonAntes.addEventListener('click', () => {
-      if (paginaAct > 1) {
-        paginaAct--;
-        obtenerFotos();
-      }
+    const pintarFormato = () => {
+      arrayFormato.forEach((item) => {
+        let opcion = document.createElement("option");
+        opcion.innerHTML += item;
+        formato.append(opcion);
+      });
+    };
+
+
+/// PINTAMOS LAS FOTOS SEGUN EL FORMATO SELECCIONADO /////
+
+
+  const pintarFotosFormato = (data, formatoSeleccionado) => {
+    DivFiltradas.innerHTML = "";
+    data.photos.forEach((photos) => {
+      const contenedorFotos = document.createElement("div");
+      contenedorFotos.classList.add("img-box");
+      const img = document.createElement("img");
+      img.src = formatoSeleccionado === "apaisado" ? photos.src.landscape : photos.src.portrait;
+      img.addEventListener("click", () => pintarFotoAmpliada(photos));
+      const caption = document.createElement("P");
+      caption.alt = photos.alt;
+      const photographer = document.createElement("P");
+      photographer.photographer = photos.photographer;
+      contenedorFotos.append(img);
+      contenedorFotos.append(caption.alt);
+      contenedorFotos.append(photographer.photographer);
+      DivFiltradas.append(contenedorFotos);
+      id = photos.id;
     });
-    contenedorBotones.appendChild(botonAntes);
-  }
+  };
 
-  if (paginaAct < totalPags) {
-    const botonDespues = document.createElement('button');
-    botonDespues.textContent = 'Siguiente';
-    botonDespues.addEventListener('click', () => {
-      if (paginaAct < totalPags) {
-        paginaAct++;
-        obtenerFotos();
-      }
-    });
-    contenedorBotones.appendChild(botonDespues);
-  }
-};
+//// PINTAMOS LAS FOTOS QUE SE BUSCASN EN EL SEARCH ///////
 
-const obtenerFotos = async () => {
-  const query = input.value;
-  const apiUrl = `https://api.pexels.com/v1/search?query=${query}&per_page=15&page=${paginaAct}`;
+  const pintarFotosFiltradas = (data) => {
+      DivFiltradas.innerHTML = "";
+      data.photos.forEach((photos) => {
+        const contenedorFotos = document.createElement("div");
+        contenedorFotos.classList.add("img-box");
+        const img = document.createElement("img");
+        img.src = photos.src.large;
+        img.addEventListener("click", () => pintarFotoAmpliada(photos));
+        const caption = document.createElement("P");
+        caption.alt = photos.alt;
+        const photographer = document.createElement("P");
+        photographer.photographer = photos.photographer;
+        contenedorFotos.append(img);
+        contenedorFotos.append(caption.alt);
+        contenedorFotos.append(photographer.photographer);
+        DivFiltradas.append(contenedorFotos);
+        id = photos.id;
+      });
+    };
 
-  try {
-    const response = await fetch(apiUrl, {
-      headers: {
-        Authorization: apiKey,
-        'Content-Type': 'application/json'
-      }
-    });
+///// PINTAMOS EL CARD INICIAL ////////////
 
-    const data = await response.json();
-    const id = data.photos.id;
-    console.log(data.photos.id)
 
-    if (data.total_results) {
-      totalPags = Math.ceil(data.total_results / 15);
+  const pintarCardIndex = () => {
+      contenedorIndex.innerHTML = '';
+      fotosIndex.forEach((item) => {
+         const cardImg = document.createElement("IMG");
+         cardImg.src = `${item[0]}`
+         cardImg.alt = `${item[1]}`
+         const textoh3 = document.createElement("H3");
+         textoh3.textContent = item[1];
+         contenedorIndex.append(cardImg, textoh3);
+      })
+     };
+
+
+////// PINTAMOS LA FOTO AMPLIADA //////////
+
+     const pintarFotoAmpliada = (photos) => {
+      fotoAmpliada.innerHTML = "";
+      const contenedorFotoA = document.createElement("div");
+      const imageA = document.createElement("img");
+      imageA.src = photos.src.large2x;
+      imageA.alt = photos.alt;
+      const caption = document.createElement("caption");
+      caption.textContent = photos.photographer;
+      contenedorFotoA.append(imageA);
+      contenedorFotoA.append(caption);
+      fotoAmpliada.append(contenedorFotoA);
+    };
+
+///// PINTAMOS LOS BOTONES DE PAGINACION ////////////////
+
+  const pintarBotones = () => {
+    contenedorBotones.innerHTML = '';
+    const pageNumber = document.createElement('span');
+    pageNumber.textContent = `Página ${paginaAct} de ${totalPags}`;
+    contenedorBotones.append(pageNumber);
+    if (totalPags > 1) {
+      const botonAntes = document.createElement('button');
+      botonAntes.classList.add("button");
+      botonAntes.textContent = 'Anterior';
+      botonAntes.addEventListener('click', () => {
+        if (paginaAct > 1) {
+          paginaAct--;
+          obtenerFotos();
+        }
+      });
+      contenedorBotones.append(botonAntes);
     }
+    if (paginaAct < totalPags) {
+      const botonDespues = document.createElement('button');
+      botonDespues.classList.add("button");
+      botonDespues.textContent = 'Siguiente';
+      botonDespues.addEventListener('click', () => {
+        if (paginaAct < totalPags) {
+          paginaAct++;
+          obtenerFotos();
+        }
+      });
+      contenedorBotones.appendChild(botonDespues);
+    }
+  };
 
-    pintarFotosFiltradas(data);
-    pintarFotoAmpliada(data);
-    pintarBotones();
-  } catch (error) {
-    console.error('Ha ocurrido un error al obtener las fotos:', error);
-  }
-};
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
+////// CONECTAMOS CON LA API PARA SACAR LA INFORMACION QUE NECESITAMOS //////////
+
+  const obtenerFotos = async () => {
+    const query = input.value;
+    const formatoSeleccionado = formato.value;
+    const apiUrl = `https://api.pexels.com/v1/search?query=${query}&per_page=15&page=${paginaAct}`;
+
+
+    try {
+      const response = await fetch(apiUrl, {
+        headers: {
+          Authorization: apiKey,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const data = await response.json();
+      if (formatoSeleccionado === "-------") {
+        pintarFotosFiltradas(data);
+      } else {
+        pintarFotosFormato(data, formatoSeleccionado);
+      }
+      if (data.total_results) {
+        totalPags = Math.ceil(data.total_results / 15);
+      }
+      pintarBotones();
+
+
+    } catch (error) {
+      console.error('Ha ocurrido un error al obtener las fotos:', error);
+    }
+  };
+  pintarFormato();
+  pintarCardIndex();
   obtenerFotos();
-});
-
-pintarCardIndex();
-obtenerFotos()
-pintarCardIndex();
+  });
