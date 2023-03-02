@@ -1,6 +1,4 @@
 
-
-
 //                CONSTANTES y VARIABLES        //
 
 
